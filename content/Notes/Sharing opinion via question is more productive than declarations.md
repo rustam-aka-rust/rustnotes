@@ -11,7 +11,7 @@ aliases:
 ---
 ## Sharing Opinions via Questions is More Productive Than Declarations
 
-- Declarative knowledge is not knowledge at all. You can reflect on something, but to proclaim that you know for certain that this fact is this and that something should be done like this, is at least presumptuous.te
+- Declarative knowledge is not knowledge at all. You can reflect on something, but to proclaim that you know for certain that this fact is this and that something should be done like this, is at least presumptuous. te
 	- Everything changes and shifts.
 	- Don’t think in terms of opinions and reactions, worries and hopes, or satisfactions and regrets.
 	- Consider the things that precede those feelings, opinions, and regrets.
