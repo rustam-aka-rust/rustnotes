@@ -2,6 +2,7 @@
 Author: 
 Book: 
 aliases: Превращение серии заметок в линейный текст -- дело непростое, Стрела развития мысли, A sequence arrow of thought
+title: Стрела развития мысли
 ---
 ## 2000 words. Transforming a sequence of notes into a linear, clear, persuasive text is difficult
 
