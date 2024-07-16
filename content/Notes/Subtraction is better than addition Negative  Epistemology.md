@@ -4,7 +4,6 @@ Type: #note
 ## Subtraction is better than addition
 > Originally this idea comes from [[Antifragile book 6#^1323f4|Nassim Taleb]], it is possible to improve it using ideas of [[The Poverty of Historicism - Karl Popper#The goal of science is to strip away everything inessential|Karl Popper]].
 
-### AI-corrected text
 As far as I can remember, from the talks I had with various authors and scientists, the majority of them, especially scientists, have been cautious with their predictions about the outcomes of experiments, social, and government changes. Now I do the same. Very rarely can anyone hear any form of prediction, mostly because they don’t come to fruition as soon as they are vocalized. Why is that?
 
 The thing is, we rarely understand the limits of what we know, and we completely lack knowledge of unknown unknowns. We can't take into account what we have missed. Close your eyes and try to recount what you haven't done. We miss the notion of inaction, which stays out of reach of our consciousness. And this is exactly what makes progress possible. The randomness of events is a true miracle worker in evolution. Embrace it. But how can we plan and make correct predictions? There is a solution.
