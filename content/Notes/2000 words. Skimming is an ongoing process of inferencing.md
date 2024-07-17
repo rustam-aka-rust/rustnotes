@@ -3,6 +3,7 @@ Author: Рустам Агамалиев
 Book: 
 aliases:
 - Скимминг -- это процесс предугадывания и подитоживания
+title: Скимминг -- это процесс предугадывания и подитоживания
 ---
 ## 2000 words. Skimming is an ongoing process of inferencing
 
