@@ -27,3 +27,7 @@
 - [[2000 words. Reviewing notes is a process of bridging old a new|Ревью заметок -- это способ связывания старого и нового]]
 - [[2000 words. What am I creating today that could be used tomorrow?|Что я создаю сегодня из того, что будет полезно завтра?]]
 - [[2000 The initial shock of note-taking|Шок (культурный) от письма заметок]]
+
+### Чтение
+
+- [[2000 words. TOTE Reading without acting|ТУТИ. Тестируй Узнавай Тестируй Изменяйся]]
