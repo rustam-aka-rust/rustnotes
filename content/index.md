@@ -20,7 +20,7 @@ title: Цифровой сад Агамалиева Рустама
 Привет, меня зовут Рустам. Я автор этого цифрового садика, а еще …
 
 - Публикуюсь в [научных журналах и провожу исследования](https://rustamagamaliev.ru/?page_id=1507). 
-- Соавтор курсов [ХУЛИлогика](https://logic.mnogosdelal.ru/) и [Как (не)читать книги](https://books.mnogosdelal.ru/). 
+- Соавтор курсов [Как "нечитать" книги](https://books.mnogosdelal.ru/) и [ХУЛИлогика](https://logic.mnogosdelal.ru/).
 - Преподаю в [школе](https://sch1194zg.mskobr.ru/teacher-card/agamaliev-rustam-telmanovich) и [университете](https://www.miet.ru/structure/s/3075/e/111262/421). 
 - Выступаю на [конференциях](https://rustamagamaliev.ru/?page_id=189). 
 - Было время, проводил встречи дискуссионного клуба [Zettelkasten RU](https://podcast.ru/1575064982)[.](http://zttl.wiki/) 
