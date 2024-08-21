@@ -71,18 +71,22 @@ Year:: 2022
 	- The defensible position of approach we have selected that also has personal benefits will be our choice.
 	- We will never look twice for another way. But usually, there are some.
 	- It’s call the third alternative.
-- If I ask myself a question, wherever there is another superior alternative to my current policy. Would I be glad for it, or I would feel the reluctance to let go?
-	- The answers “yes” and “no”, is a clue that there is the third alternative, you can look.
-	- You need to purposefully look for it.
-- Did you spend at least five minutes brainstorming and generating creative ideas, thinking of better alternatives?
-	- Set a timer, 5-10 minute and begin to work. 
-		- ==An actual physical clock is recommended.==
-	- Without a clock, it will be a black hole for your effort.
-	- This activity is not like rumination, it has to have predefined limits.
-	- [[What are knowledge creation systems#^c4cf09]]
+- According to [[Reader, Come Home - The Reading Brain in a Digital World#^7806e0|Marianna Wolf and her take on the idea expressed by Nikolas of Cusa]], a philosopher of 15th Century, is that if we face two equally good decisions that contradict each other, and I would say not necessary contradict we should take a stance of conicidence of opposites, which means assume a position of learned ignorance.
+	- In reality it means that a person facing a dilemma, has to explore them, understand both positions and then go outside of them to evaluate and the decide the course to be taken.
+	- The course not always correlates with two initial positions.
+	- It could be the third alternative.
+- There is a possible approach to this condition. 
+	- Yudkiwsky suggest that by asking a question, wherever there is another superior alternative to my current policy? Or Would I be glad for it, or I would feel the reluctance to let go? We can trigger necessary thinking patterns that can help us find existing another path.
+		- If the answers “yes” and “no” to any of the afromentioned questions then it is a clue that there is the third alternative, we can look into.
+			- This action requires intentions.
+			- Spend at least five minutes brainstorming and generating creative ideas, thinking of better alternatives?
+				- Set a timer, 5-10 minute and begin to work. 
+					- ==An actual physical clock is recommended.==
+				- Without a clock, it will be a black hole for your effort, which means uncontrolles and stressful process. Timer helps not to overberden limited cognitive recourses.
+				- This activity is not like rumination, it has to have predefined limits.
+				- [[What are knowledge creation systems#^c4cf09]]
 - [[What is rationality#^be0bb6]]
 - [[Старайся лучше]]
-
 
 - How to do better? What questions to ask? Where to look?
 	- If you really want to do better, and you don’t feel sorry for your cherished beliefs, and ready to go the whole mile, then you should do it.
