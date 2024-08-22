@@ -1,11 +1,10 @@
 ---
-Alias::  Искусство говорить о книгах, которые вы никогда не читали
-Author:: Pierre Bayard
-Status:: #done 
-Type:: 
-Cover:: https://m.media-amazon.com/images/I/61crK-yl1jL._AC_UF1000,1000_QL80_.jpg
-Annotation:: With so many important books out there, and thousands more being published each year, what are we supposed to do in those inevitable social situations where we're forced to talk about books we haven't read? Pierre Bayard argues that it doesn't really matter if you've read a book or not. (In fact, in certain situations, reading the book is the worst thing you could do.) Championing the various forms of "non-reading," How to Talk About Books You Haven't Read is really a celebration of books, for book lovers everywhere to enjoy, ponder, argue about-and perhaps even read.
-Year::
+Alias:  Искусство говорить о книгах, которые вы никогда не читали
+Author: Pierre Bayard
+Status: #done 
+Type: 
+Cover: https://m.media-amazon.com/images/I/61crK-yl1jL._AC_UF1000,1000_QL80_.jpg
+Annotation: With so many important books out there, and thousands more being published each year, what are we supposed to do in those inevitable social situations where we're forced to talk about books we haven't read? Pierre Bayard argues that it doesn't really matter if you've read a book or not. (In fact, in certain situations, reading the book is the worst thing you could do.) Championing the various forms of "non-reading," How to Talk About Books You Haven't Read is really a celebration of books, for book lovers everywhere to enjoy, ponder, argue about-and perhaps even read.
 ---
 
 ---
@@ -41,6 +40,8 @@ One of the best books about reading. But it’s not, strictly speaking, about bo
 	- Instead of answering the question, what is reading, we just dive in and read, with low to non-existent comprehension of the material, that doesn’t even touch our view on certain situations as a consequence, we stay the same, as teachers. Cast in time, with the same irrelevant problems.
 
 ### Before talking about how to talk, we have to define what is reading
+- [[Why are we reading nowadays?|Take this note into account]]
+
 - As Povarnin [[Искусство Спора - Сергей Поварнин]] famously says in his book, before we can talk on the topic, the topic itself must be defined and set up.
 	- So, what is reading?
 	- Under this definition hides several practices, some are counterintuitive, but effective.
