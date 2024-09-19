@@ -37,7 +37,7 @@ aliases:
 > Source::
 > Friend::
 > Child::
-> Next::
+> Next:: [[Desire to be entertained foster two dimensional people]]
 
 **Keywords**:
 

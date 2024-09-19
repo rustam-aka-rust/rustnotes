@@ -1,11 +1,12 @@
-
 ---
-Alias:: Практикующий стоик
-Author:: Ward Farnsworth
-Status:: #done    
-Type:: non-fiction
-Cover:: https://images-na.ssl-images-amazon.com/images/I/61XPyH8oNCL._SX332_BO1,204,203,200_.jpg
-Year:: 2022
+Alias: Практикующий стоик
+Author: Ward Farnsworth
+Status: #done    
+Type: non-fiction
+Cover: https://images-na.ssl-images-amazon.com/images/I/61XPyH8oNCL._SX332_BO1,204,203,200_.jpg
+Year: 2022
+aliases: 
+- The virtuous life leads to living a good life
 ---
 
 ---
@@ -358,19 +359,20 @@ Another maxim might be useful.
 	- Wise man knows that everything is in store for him. When something happens, he says “I knew.”
 
 ### Virtue
+
 - What is virtue?
-	- Stoics consider everything reasonable thing virtuous. 
-	- The use of reason is the distinct gift that sets us apart from animals.
-	- Thus, the purpose of life must be found is in acting reasonably wherever one can.
-- It subsequently brings happiness, which in turn valued the most by Stoics. 
-	- The condition of eudaimonia or well-being, which in turn is not a good mood but the good life.
-	- This state of mind can’t be achieved by chance. It is a byproduct of effort applied purposefully. 
-- Embrace virtue for its own sake, and it will inadvertently lead to a good life.
-	- Naval’s notion about working for its own sake [[Работа ради работы]]. Do whatever needs to be done and be happy with that.
-- There are three pillars that virtue stands on. ^f092f2
-	- **Honesty**. Not just speaking the truth, but living without necessity to hide anything.
-	- **Consistency**. Never deviate from what you think is right. Think and act the same, in public, at home, alone.
-	- **Kindness**.
+    - The Stoics regard every rational action as virtuous.
+    - The capacity for reason is the unique gift that distinguishes us from animals.
+    - Therefore, the purpose of life must be found in acting rationally whenever one is able.
+- This, in turn, brings happiness, which is esteemed above all by the Stoics.
+    - The condition of _eudaimonia_ or well-being is not merely a fleeting good mood, but rather the good life.
+    - This state of fulfillment cannot be attained by chance; it is the result of deliberate and purposeful effort.
+- Embrace virtue for its own sake, and it will inevitably lead to a good life.
+    - Naval’s notion of working for its own sake [[Работа ради работы]]: Do whatever needs to be done and derive satisfaction from that.
+- There are three pillars that virtue rests upon: ^f092f2
+    - **Honesty**: Not merely speaking the truth, but living in such a way that you have nothing to conceal.
+    - **Consistency**: Never waver from what you believe to be right. Think and act with the same integrity, whether in public, at home, or in solitude.
+    - **Kindness**.
 
 ### Learning
 > Stoicism among other things is a regimen for training the mind.

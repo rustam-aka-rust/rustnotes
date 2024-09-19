@@ -9,6 +9,8 @@ aliases:
   - организация материала
   - a case of poor design
   - organization of the material
+  - Botez sisters play chess
+  - Sexual arousal from solving a difficult puzzle
 ---
 ## Why school is boring
 #### We are bored to the bone
@@ -39,6 +41,8 @@ aliases:
 		- Another link to follow: [[Andragogy after twenty-five years]]
 
 > Solving something is like having sex. The harder the problem, the more intense the experience. Take a look at [Alexandra Botez](https://youtu.be/FpGkP19-GtQ) face when she wins over Magnus, listen to her commentaries after she is done.
+
+^63f6c4
 
 ### Organization of the material
 - Before we dive into the process, I’d like to cover the topic of what is wrong with the subjects.
