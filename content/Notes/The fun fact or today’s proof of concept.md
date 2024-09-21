@@ -15,6 +15,7 @@ So, instead of letting them rest, I decided to entertain them and opted for a si
 Among the various responses, one in particular caught my attention: someone said they hate school because of incompetent teachers. This led me to follow up with a question: “What does ‘incompetent’ mean?” The explanation was long and ambiguous, but it crystallized in a brief exchange:
 
 – You’ve said I am a competent teacher. I’m not teaching you anything at the moment, just entertaining you. What makes me competent?
+
 – You’re interested in us?
 
 ***
