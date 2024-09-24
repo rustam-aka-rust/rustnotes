@@ -42,7 +42,7 @@ aliases:
 > Source::
 > Friend::
 > Child::
-> Next::
+> Next:: [[The essence of education is to struggle and a teacher in the classroom the master]]
 
 **Keywords**:
 
