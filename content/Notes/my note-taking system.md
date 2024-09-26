@@ -47,6 +47,21 @@ Why have I mentioned Zettelkasten? It's because it has been immensely hyped over
     - That's the reason why I rewrite notes all the time by hand.
     - To work with the ideas on a deeper level.
 
+
+### Splitting up the context of the note
+
+- Frequently, I’ve encountered questions from novices in note-taking about separating the contexts of home and work.
+	- Throughout my entire experience with note-taking, I’ve opposed this idea—not because it’s inherently flawed, but because it’s downright detrimental to effective thinking and working.
+	- You see, the majority of people don’t understand this because they are too preoccupied with categorizing knowledge when they should be engaging in the creation of knowledge.
+		- A classical [[I am often called a constructivist, which is actually true|constructivist’s approach]] to the process of knowledge creation.
+	- In their attempt to keep themselves even busier, they devise systems of tags and folders, which they believe will “assist” them in compartmentalizing contexts.
+- Some go even further, implementing more radical divisions by creating separate vaults for their ideas—personal and professional.
+	- The thing is, folders, tags, and vaults are merely the visible tip of the iceberg. We observe how it works for someone else and mistakenly conclude that it will work for us as well.
+	- And this is where the error lies. The true process of thinking occurs beneath the surface, below the iceberg’s tip, out of sight. Believe me, there is no room for the tidiness and order we assume folders, tags, and vaults will provide.
+	- If anyone establishes a system that fragments contexts in the domain of thinking, it’s comparable to building walls that impede rather than enhance creativity.
+- Thinking should not be confined to a single context; it must be as expansive as we can allow it to be without losing focus on the objective we initially set out to contemplate.
+	- Don’t build walls—create a network of roads.
+
 ***
 ### BIO
 
