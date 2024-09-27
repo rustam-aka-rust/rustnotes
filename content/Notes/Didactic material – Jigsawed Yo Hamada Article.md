@@ -29,7 +29,7 @@ To adapt the **Jigsaw Reading** for **three groups of three students each** (9 t
 
 **Subtopic 3: Shadowing Process**  
 - **Question Type**: *Life Situation Lab (Application and Comparison)*  
-  - **Question**: How might the shadowing
+  - **Question**: How might the shadowing process described by the author be applied in your own language learning practice?
 
 ---
 
