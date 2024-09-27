@@ -22,9 +22,11 @@ To adapt the **Jigsaw Reading** for **three groups of three students each** (9 t
 **Subtopic 1: Introduction to Shadowing**  
 - **Question Type**: *Bridge Building (Activation of Prior Knowledge)*  
   - **Question**: What do we already know about the origins of shadowing and its use in language learning?
+
 **Subtopic 2: Listening vs. Shadowing**  
 - **Question Type**: *Analytical Acrobatics (Critical Thinking and Analysis)*  
   - **Question**: What are the strengths and weaknesses of the author's explanation of how shadowing differs from traditional listening techniques?
+
 **Subtopic 3: Shadowing Process**  
 - **Question Type**: *Life Situation Lab (Application and Comparison)*  
   - **Question**: How might the shadowing
@@ -43,9 +45,11 @@ To adapt the **Jigsaw Reading** for **three groups of three students each** (9 t
 **Subtopic 1: Cognitive Processes**  
 - **Question Type**: *Analytical Acrobatics (Critical Thinking and Analysis)*  
   - **Question**: Why is the role of cognitive resource important in the shadowing process as explained by the author?
+
 **Subtopic 2: Bottom-Up vs. Top-Down Processing**  
 - **Question Type**: *Bridge Building (Activation of Prior Knowledge)*  
   - **Question**: How does the author’s discussion of bottom-up and top-down processes in shadowing align with what we already know about these cognitive functions?
+
 **Subtopic 3: Research on Listening Benefits**  
 - **Question Type**: *Life Situation Lab (Application and Comparison)*  
   - **Question**: What might be another example of a learning strategy that improves bottom-up processing, similar to shadowing?
@@ -64,9 +68,11 @@ To adapt the **Jigsaw Reading** for **three groups of three students each** (9 t
 **Subtopic 1: Shadowing and Speaking**  
 - **Question Type**: *Life Situation Lab (Application and Comparison)*  
   - **Question**: How could the author’s ideas on using shadowing to improve speaking skills be implemented in an advanced language classroom?
+
 **Subtopic 2: Challenges in Research and Practice**  
 - **Question Type**: *Analytical Acrobatics (Critical Thinking and Analysis)*  
   - **Question**: What are the possible limitations of shadowing research that the author presents, and do you agree with them? Why or why not?
+
 **Subtopic 3: Shadowing Variations**  
 - **Question Type**: *Bridge Building (Activation of Prior Knowledge)*  
   - **Question**: What might be a practical example from your own learning experience that mirrors the author's explanation of selective shadowing?
