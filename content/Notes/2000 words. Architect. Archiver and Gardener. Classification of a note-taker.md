@@ -4,6 +4,9 @@ Book:
 title: Архитектор. Архивариус и Садовод
 aliases:
 - Архитектор. Архивариус и Садовод
+- Удобно правда
+- Две минуты
+- Папочки и теги в системе
 ---
 ## 2000 words. Architect. Archiver and Gardener. Classification of a note-taker
 
