@@ -3,7 +3,7 @@ Author: Рустам Агамалиев
 Book: 
 title: Инструкция как написать хорошее мини-эссе и что потом со всем этим делать
 aliases:
-  - Инструкция как написать хорошее мини-эссе и что потом со всем этим делать
+- Инструкция как написать хорошее мини-эссе и что потом со всем этим делать
 ---
 ## 100-300 words the anatomy of a good essay, or an instruction how to craft one
 
@@ -27,7 +27,7 @@ aliases:
 > Source::
 > Friend::
 > Child::
-> Next::
+> Next:: [[100-300 words. Intro, Body and Conclusion. Nothing new, but there is a catch]]
 
 **Keywords**:
 
