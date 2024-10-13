@@ -1,11 +1,10 @@
 ---
 excalidraw-plugin: parsed
-tags:
-  - excalidraw
-Author: null
-Book: null
-title: null
-aliases: null
+tags: []
+Author: 
+Book: 
+title: 
+aliases:
 ---
 
 ## Converting test into the excalidraw format
