@@ -19,6 +19,10 @@ export const sharedPageComponents: SharedLayout = {
       categoryId: 'DIC_kwDOMV6efM4CuINg',
       // from data-lang
       lang: 'ru'
+      // Other options
+      themeUrl: "https://example.com/static/giscus", // corresponds to quartz/static/giscus/
+      lightTheme: "light-theme", // corresponds to light-theme.css in quartz/static/giscus/
+      darkTheme: "dark-theme", // corresponds to dark-theme.css quartz/static/giscus/
     }
   }),
 ],
