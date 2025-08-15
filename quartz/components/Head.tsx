@@ -27,14 +27,11 @@ export default (() => {
     const baseDir = fileData.slug === "404" ? path : pathToRoot(fileData.slug!)
     const iconPath = joinSegments(baseDir, "static/icon.png")
 
-    // Url of current page
-    const socialUrl =
-      fileData.slug === "404" ? url.toString() : joinSegments(url.toString(), fileData.slug!)
-
-    const usesCustomOgImage = ctx.cfg.plugins.emitters.some(
-      (e) => e.name === CustomOgImagesEmitterName,
-    )
-    const ogImageDefaultPath = `https://${cfg.baseUrl}/static/og-image.png`
+    const ogImageDefaultPath = `https://${cfg.baseUrl}/static/og-image.jpg`
+    const socialUrl = `https://${cfg.baseUrl}${path}${fileData.slug}`
+    
+    // Check if custom OG images are enabled
+    const usesCustomOgImage = ctx.cfg.plugins.emitters.some((emitter: any) => emitter.name === CustomOgImagesEmitterName)
 
     return (
       <head>
