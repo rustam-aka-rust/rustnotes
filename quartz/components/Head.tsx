@@ -34,7 +34,11 @@ export default (() => {
     const usesCustomOgImage = ctx.cfg.plugins.emitters.some(
       (e) => e.name === CustomOgImagesEmitterName,
     )
-    const ogImageDefaultPath = `https://${cfg.baseUrl}/static/og-image.png`
+    const ogImageDefaultPath = `https://${cfg.baseUrl}/static/og-image.jpg`
+    const socialUrl = `https://${cfg.baseUrl}${path}${fileData.slug}`
+    
+    // Check if custom OG images are enabled
+    const usesCustomOgImage = ctx.cfg.plugins.emitters.some((emitter: any) => emitter.name === CustomOgImagesEmitterName)
 
     return (
       <head>
