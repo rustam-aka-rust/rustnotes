@@ -2203,5 +2203,427 @@ plt.show()
 
 
 ```python
+import numpy as np
+import pandas as pd
+from statsmodels.stats.outliers_influence import variance_inflation_factor
+
+# 1. Prepare the Data Matrices
+# We need rows where all data is present
+clean_data = df[['GPA', 'Sleep_Hours', 'ScreenTime_Weekend']].dropna()
+
+# Y = The Dependent Variable (GPA)
+Y = clean_data['GPA'].values
+
+# X = The Independent Variables (Sleep, ScreenTime)
+X_raw = clean_data[['Sleep_Hours', 'ScreenTime_Weekend']].values
+
+# IMPORTANT: We must add a column of "1s" to X.
+# This represents b0 (The Intercept / "Свободный член")
+# If we don't do this, the line is forced to go through (0,0), which is wrong.
+ones = np.ones((len(X_raw), 1))
+X_matrix = np.hstack((ones, X_raw))
+
+# ---------------------------------------------------------
+# 2. CALCULATION: The Normal Equation
+# Formula: b = (X^T * X)^-1 * X^T * Y
+# ---------------------------------------------------------
+
+# X Transposed (X^T)
+X_T = X_matrix.T
+
+# (X^T * X)
+XTX = X_T.dot(X_matrix)
+
+# Inverse of (X^T * X) -> (X^T * X)^-1
+XTX_inv = np.linalg.inv(XTX)
+
+# Final Coefficients: (XTX_inv * X^T) * Y
+b = XTX_inv.dot(X_T).dot(Y)
+
+print("--- MANUAL CALCULATION RESULTS ---")
+print(f"Intercept (b0): {b[0]:.4f}")
+print(f"Sleep Coef (b1): {b[1]:.4f}")
+print(f"Screen Coef (b2): {b[2]:.4f}")
+
+# ---------------------------------------------------------
+# 3. EVALUATION: R-Squared and MSE
+# ---------------------------------------------------------
+
+# Calculate Predictions (Y_hat)
+Y_pred = X_matrix.dot(b)
+
+# Calculate Residuals (Errors)
+residuals = Y - Y_pred
+
+# Sum of Squared Errors (SSE) / Residuals (SS_res)
+SS_res = np.sum(residuals ** 2)
+
+# Total Sum of Squares (SS_tot)
+SS_tot = np.sum((Y - np.mean(Y)) ** 2)
+
+# R-Squared
+R2 = 1 - (SS_res / SS_tot)
+
+# Mean Squared Error (MSE)
+n = len(Y)
+p = 3 # Number of parameters (b0, b1, b2)
+MSE = SS_res / (n - p)
+
+print("-" * 30)
+print(f"R-Squared: {R2:.4f}")
+print(f"MSE:       {MSE:.4f}")
+print("-" * 30)
+
+# ---------------------------------------------------------
+# 4. MULTICOLLINEARITY (VIF)
+# ---------------------------------------------------------
+# VIF checks if Sleep and Screens are TOO correlated to be in the same model.
+# Rule of thumb: VIF > 5 is bad. VIF < 5 is good.
+
+vif_data = pd.DataFrame()
+vif_data["Variable"] = ['Intercept', 'Sleep_Hours', 'ScreenTime_Weekend']
+vif_data["VIF"] = [variance_inflation_factor(X_matrix, i) for i in range(X_matrix.shape[1])]
+
+print("\n--- VIF ANALYSIS (Is there Multicollinearity?) ---")
+print(vif_data)
+```
+
+    --- MANUAL CALCULATION RESULTS ---
+    Intercept (b0): 4.2364
+    Sleep Coef (b1): 0.0172
+    Screen Coef (b2): -0.0313
+    ------------------------------
+    R-Squared: 0.0610
+    MSE:       0.2698
+    ------------------------------
+    
+    --- VIF ANALYSIS (Is there Multicollinearity?) ---
+                 Variable        VIF
+    0           Intercept  33.414786
+    1         Sleep_Hours   1.030827
+    2  ScreenTime_Weekend   1.030827
+
+
+
+```python
+from scipy import stats
+
+# ---------------------------------------------------------
+# 5. MANUAL P-VALUE CALCULATION
+# ---------------------------------------------------------
+
+# A. Calculate the Variance-Covariance Matrix of the coefficients
+# Var(b) = MSE * (X^T * X)^-1
+cov_matrix = MSE * XTX_inv
+
+# B. Standard Errors (SE) are the square root of the diagonal elements
+se_b = np.sqrt(np.diag(cov_matrix))
+
+# C. t-statistics
+# t = coefficient / standard_error
+t_stats = b / se_b
+
+# D. P-Values
+# We use the t-distribution with (n - p) degrees of freedom
+# We multiply by 2 because it is a "two-tailed" test (checking for both positive and negative effects)
+degrees_of_freedom = n - p
+p_values = [2 * (1 - stats.t.cdf(np.abs(t), degrees_of_freedom)) for t in t_stats]
+
+# ---------------------------------------------------------
+# PRINT COMPARISON
+# ---------------------------------------------------------
+labels = ['Intercept', 'Sleep_Hours', 'ScreenTime_Weekend']
+
+print("--- MANUAL P-VALUE VERIFICATION ---")
+print(f"{'Variable':<20} | {'Coef':<10} | {'SE':<10} | {'t-stat':<10} | {'P-Value':<10}")
+print("-" * 75)
+
+for i in range(len(labels)):
+    print(f"{labels[i]:<20} | {b[i]:.4f}     | {se_b[i]:.4f}     | {t_stats[i]:.4f}     | {p_values[i]:.4f}")
+
+print("-" * 75)
+print("Do these match your previous statsmodels result? (They should!)")
+```
+
+    --- MANUAL P-VALUE VERIFICATION ---
+    Variable             | Coef       | SE         | t-stat     | P-Value   
+    ---------------------------------------------------------------------------
+    Intercept            | 4.2364     | 0.2220     | 19.0866     | 0.0000
+    Sleep_Hours          | 0.0172     | 0.0290     | 0.5945     | 0.5529
+    ScreenTime_Weekend   | -0.0313     | 0.0097     | -3.2139     | 0.0016
+    ---------------------------------------------------------------------------
+    Do these match your previous statsmodels result? (They should!)
+
+
+
+```python
+import statsmodels.api as sm
+
+# 1. Prepare the data (Using Weekday Screen Time this time)
+subset_weekday = df[['GPA', 'Sleep_Hours', 'ScreenTime_Weekday']].dropna()
+
+# 2. Define Y (Target) and X (Predictors)
+Y_wd = subset_weekday['GPA']
+X_wd = subset_weekday[['Sleep_Hours', 'ScreenTime_Weekday']]
+
+# Add Constant
+X_wd = sm.add_constant(X_wd)
+
+# 3. Fit the Model
+model_weekday = sm.OLS(Y_wd, X_wd).fit()
+
+# 4. Print the results
+print("--- ANALYSIS: WEEKDAY SCREEN TIME ---")
+print(f"R-squared: {model_weekday.rsquared:.3f}")
+print("-" * 60)
+print(model_weekday.summary().tables[1])
+print("-" * 60)
+```
+
+    --- ANALYSIS: WEEKDAY SCREEN TIME ---
+    R-squared: 0.045
+    ------------------------------------------------------------
+    ======================================================================================
+                             coef    std err          t      P>|t|      [0.025      0.975]
+    --------------------------------------------------------------------------------------
+    const                  4.2250      0.232     18.210      0.000       3.767       4.683
+    Sleep_Hours            0.0145      0.030      0.488      0.626      -0.044       0.073
+    ScreenTime_Weekday    -0.0357      0.013     -2.679      0.008      -0.062      -0.009
+    ======================================================================================
+    ------------------------------------------------------------
+
+
+
+```python
+import pandas as pd
+import statsmodels.formula.api as smf
+from statsmodels.stats.anova import anova_lm
+
+# 1. Reload data (Assuming 'df' is already loaded from the previous block. 
+# If not, reload it quickly using pd.read_csv)
+
+# 2. Rename columns to be formula-friendly (No spaces allowed in formulas)
+# We need to use 'ScreenTime_Weekend' -> 'Screen'
+clean_df = df[['GPA', 'Sleep_Hours', 'ScreenTime_Weekend']].dropna()
+clean_df.columns = ['GPA', 'Sleep', 'Screen'] 
+
+# 3. Fit the Model using Formula API (GPA ~ Sleep + Screen)
+# This automatically handles the Constant/Intercept
+model = smf.ols('GPA ~ Sleep + Screen', data=clean_df).fit()
+
+# 4. Generate ANOVA Table (Type II)
+anova_results = anova_lm(model, typ=2)
+
+print("--- CLASSIC ANOVA TABLE (F-Values) ---")
+print(anova_results)
+print("-" * 60)
+print(f"Global Model F-Statistic: {model.fvalue:.4f}")
+print(f"Global Model P(F):        {model.f_pvalue:.6f}")
+print("-" * 60)
+print(f"R-Squared: {model.rsquared:.4f}")
+```
+
+    --- CLASSIC ANOVA TABLE (F-Values) ---
+                 sum_sq     df          F    PR(>F)
+    Sleep      0.095343    1.0   0.353387  0.552948
+    Screen     2.786844    1.0  10.329365  0.001552
+    Residual  48.563682  180.0        NaN       NaN
+    ------------------------------------------------------------
+    Global Model F-Statistic: 5.8466
+    Global Model P(F):        0.003467
+    ------------------------------------------------------------
+    R-Squared: 0.0610
+
+
+
+```python
+import statsmodels.formula.api as smf
+
+# 1. Ensure Sports is Numeric (if not already loaded)
+sports_map = {'Ни одного': 0, 'Нет': 0, 'Ничего': 0, '1-2': 1, '2-3': 2, 'Более 3 раз': 3}
+df['Sports_Numeric'] = df['Training_Freq'].map(sports_map)
+
+# 2. Prepare Data (Drop missing values for ALL 4 columns now)
+# We use 'ScreenTime_Weekend' because it was the strongest predictor
+clean_df = df[['GPA', 'Sleep_Hours', 'ScreenTime_Weekend', 'Sports_Numeric']].dropna()
+clean_df.columns = ['GPA', 'Sleep', 'Screen', 'Sports']
+
+# 3. Fit the Expanded Model
+model_expanded = smf.ols('GPA ~ Screen + Sleep + Sports', data=clean_df).fit()
+
+# 4. Print Results
+print("--- EXPANDED MODEL (Screen + Sleep + Sports) ---")
+print(f"Old R-Squared (Screen + Sleep): 0.061")
+print(f"New R-Squared (All Three):      {model_expanded.rsquared:.3f}")
+print("-" * 60)
+print(model_expanded.summary().tables[1])
+print("-" * 60)
+```
+
+    --- EXPANDED MODEL (Screen + Sleep + Sports) ---
+    Old R-Squared (Screen + Sleep): 0.061
+    New R-Squared (All Three):      0.062
+    ------------------------------------------------------------
+    ==============================================================================
+                     coef    std err          t      P>|t|      [0.025      0.975]
+    ------------------------------------------------------------------------------
+    Intercept      4.1840      0.233     17.961      0.000       3.724       4.644
+    Screen        -0.0295      0.010     -2.954      0.004      -0.049      -0.010
+    Sleep          0.0163      0.029      0.559      0.577      -0.041       0.074
+    Sports         0.0253      0.034      0.748      0.455      -0.041       0.092
+    ==============================================================================
+    ------------------------------------------------------------
+
+
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 1. Define Risk Factors (1 = Bad, 0 = Good)
+# Risk 1: Screen Time > 7 hours (Median)
+df['Risk_Screen'] = (df['ScreenTime_Weekend'] > 7).astype(int)
+
+# Risk 2: Sleep < 7 hours (Recommended minimum)
+df['Risk_Sleep'] = (df['Sleep_Hours'] < 7).astype(int)
+
+# Risk 3: Sports < 2 times a week (Inactive)
+df['Risk_Sports'] = (df['Sports_Numeric'] < 2).astype(int)
+
+# 2. Calculate Cumulative Risk Score (0 to 3)
+df['Bad_Habit_Score'] = df['Risk_Screen'] + df['Risk_Sleep'] + df['Risk_Sports']
+
+# 3. Calculate Average GPA for each group
+risk_stats = df.groupby('Bad_Habit_Score')['GPA'].mean()
+print("--- THE VICIOUS CYCLE EFFECT ---")
+print("Average GPA by Number of Bad Habits:")
+print(risk_stats.round(2))
+
+# 4. Visualize
+plt.figure(figsize=(10, 6))
+sns.barplot(
+    data=df, 
+    x='Bad_Habit_Score', 
+    y='GPA', 
+    palette='RdYlGn_r', # Red-Yellow-Green reversed (Green for 0, Red for 3)
+    errorbar=None,
+    hue='Bad_Habit_Score',
+    legend=False
+)
+
+plt.title('Cumulative Effect: Do "Bad Habits" Stack Up?', fontsize=14)
+plt.ylabel('Average GPA', fontsize=12)
+plt.xlabel('Number of Risk Factors (High Screen, Low Sleep, No Sport)', fontsize=12)
+plt.ylim(3.5, 4.5) # Zoom in to see the drop
+plt.show()
+```
+
+    --- THE VICIOUS CYCLE EFFECT ---
+    Average GPA by Number of Bad Habits:
+    Bad_Habit_Score
+    0    4.10
+    1    4.22
+    2    4.15
+    3    3.82
+    Name: GPA, dtype: float64
+
+
+
+    
+![png](output_39_1.png)
+    
+
+
+
+```python
+from scipy.stats import mannwhitneyu
+
+# 1. Define the Groups
+# Group A: The "Survivors" (0, 1, or 2 Bad Habits)
+survivors = df[df['Bad_Habit_Score'] < 3]['GPA']
+
+# Group B: The "Vicious Cycle" (3 Bad Habits)
+crashers = df[df['Bad_Habit_Score'] == 3]['GPA']
+
+# 2. Print Sizes and Averages
+print(f"Survivors (0-2 Habits): N={len(survivors)}, Average GPA={survivors.mean():.2f}")
+print(f"Crashers (3 Habits):    N={len(crashers)}, Average GPA={crashers.mean():.2f}")
+print("-" * 50)
+
+# 3. Run the Truth Test
+stat, p_value = mannwhitneyu(survivors, crashers)
+
+print(f"P-Value: {p_value:.4f}")
+print("-" * 50)
+
+if p_value < 0.05:
+    print("VERDICT: SIGNIFICANT CLIFF EFFECT.")
+    print("Students with all 3 risk factors perform significantly worse than everyone else.")
+else:
+    print("VERDICT: Not significant.")
+```
+
+    Survivors (0-2 Habits): N=156, Average GPA=4.17
+    Crashers (3 Habits):    N=27, Average GPA=3.82
+    --------------------------------------------------
+    P-Value: 0.0143
+    --------------------------------------------------
+    VERDICT: SIGNIFICANT CLIFF EFFECT.
+    Students with all 3 risk factors perform significantly worse than everyone else.
+
+
+
+```python
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 1. Create a simplified label
+def define_group(score):
+    if score == 3:
+        return 'The "Vicious Cycle"\n(Screens + No Sleep + No Sport)'
+    else:
+        return 'The Resilient Majority\n(0-2 Risk Factors)'
+
+df['Risk_Group'] = df['Bad_Habit_Score'].apply(define_group)
+
+# 2. Visualize (Clean Syntax)
+plt.figure(figsize=(9, 6))
+colors = ['#2ecc71', '#e74c3c'] # Green vs Red
+
+ax = sns.barplot(
+    data=df, 
+    x='Risk_Group', 
+    y='GPA', 
+    hue='Risk_Group',    # Fixes the palette warning
+    palette=colors,
+    estimator='mean',
+    errorbar=None,       # Fixes the 'ci' warning
+    legend=False         # Hides redundant legend
+)
+
+# Add the GPA numbers on top of the bars
+for p in ax.patches:
+    ax.annotate(f'{p.get_height():.2f}', 
+                (p.get_x() + p.get_width() / 2., p.get_height()), 
+                ha='center', va='center', 
+                xytext=(0, -15), 
+                textcoords='offset points',
+                fontsize=14, color='white', weight='bold')
+
+plt.title('The Tipping Point: The "Cliff" Effect on Grades', fontsize=14)
+plt.xlabel('')
+plt.ylabel('Average GPA (1-5)', fontsize=12)
+plt.ylim(3.5, 4.4) 
+plt.show()
+```
+
+
+    
+![png](output_41_0.png)
+    
+
+
+
+```python
 
 ```
