@@ -2625,5 +2625,238 @@ plt.show()
 
 
 ```python
+import statsmodels.formula.api as smf
+
+# 1. Ensure our Risk columns are ready (0 or 1)
+# We created these earlier: 'Risk_Screen', 'Risk_Sleep', 'Risk_Sports'
+# Risk = 1 means (High Screen, Low Sleep, or No Sport)
+
+# 2. Fit a model using these Binary Risks instead of the continuous hours
+risk_model = smf.ols('GPA ~ Risk_Screen + Risk_Sleep + Risk_Sports', data=df).fit()
+
+# 3. Print the Result
+print("--- RISK FACTOR MODEL (Binary Inputs) ---")
+print(f"R-Squared (Variance Explained): {risk_model.rsquared:.4f}")
+print(f"P-Value (Global Model):         {risk_model.f_pvalue:.6f}")
+print("-" * 60)
+print(risk_model.summary().tables[1])
+print("-" * 60)
+
+# 4. Compare with the "Cliff" Model (Just 0-2 Habits vs 3 Habits)
+cliff_model = smf.ols('GPA ~ Bad_Habit_Score', data=df).fit()
+print(f"R-Squared for the Cumulative Score (0-3): {cliff_model.rsquared:.4f}")
+```
+
+    --- RISK FACTOR MODEL (Binary Inputs) ---
+    R-Squared (Variance Explained): 0.0216
+    P-Value (Global Model):         0.269647
+    ------------------------------------------------------------
+    ===============================================================================
+                      coef    std err          t      P>|t|      [0.025      0.975]
+    -------------------------------------------------------------------------------
+    Intercept       4.2255      0.068     62.518      0.000       4.092       4.359
+    Risk_Screen    -0.0776      0.081     -0.964      0.336      -0.236       0.081
+    Risk_Sleep     -0.0736      0.080     -0.915      0.361      -0.232       0.085
+    Risk_Sports    -0.0896      0.080     -1.116      0.266      -0.248       0.069
+    ===============================================================================
+    ------------------------------------------------------------
+    R-Squared for the Cumulative Score (0-3): 0.0215
+
+
+
+```python
+import numpy as np
+
+# 1. Get the two extreme groups
+group_perfect = df[df['Bad_Habit_Score'] == 0]['GPA']
+group_vicious = df[df['Bad_Habit_Score'] == 3]['GPA']
+
+# 2. Calculate Means and Standard Deviations
+mean_0 = group_perfect.mean()
+mean_3 = group_vicious.mean()
+std_0 = group_perfect.std()
+std_3 = group_vicious.std()
+
+# 3. Calculate Pooled Standard Deviation
+n_0 = len(group_perfect)
+n_3 = len(group_vicious)
+pooled_std = np.sqrt(((n_0 - 1) * std_0**2 + (n_3 - 1) * std_3**2) / (n_0 + n_3 - 2))
+
+# 4. Calculate Cohen's d
+cohens_d = (mean_0 - mean_3) / pooled_std
+
+print("--- IMPACT ANALYSIS (Effect Size) ---")
+print(f"GPA of 'Perfect' Students (0 Risks): {mean_0:.2f}")
+print(f"GPA of 'Vicious Cycle' Students (3 Risks): {mean_3:.2f}")
+print(f"Difference: {mean_0 - mean_3:.2f} points")
+print("-" * 40)
+print(f"Cohen's d (Effect Size): {cohens_d:.3f}")
+
+if cohens_d > 0.8: print("Verdict: HUGE Effect.")
+elif cohens_d > 0.5: print("Verdict: MEDIUM-LARGE Effect.")
+elif cohens_d > 0.2: print("Verdict: SMALL Effect.")
+```
+
+    --- IMPACT ANALYSIS (Effect Size) ---
+    GPA of 'Perfect' Students (0 Risks): 4.10
+    GPA of 'Vicious Cycle' Students (3 Risks): 3.82
+    Difference: 0.28 points
+    ----------------------------------------
+    Cohen's d (Effect Size): 0.423
+    Verdict: SMALL Effect.
+
+
+
+```python
+import pandas as pd
+
+# --- 1. RE-DEFINE THE THRESHOLDS (Just to be precise) ---
+# We use the definitions from our previous steps
+median_screen = 7.0
+sleep_limit = 7.0
+sport_limit = 2.0 # Less than 2 means (0 or 1 time a week)
+
+# Ensure columns exist
+sports_map = {'Ни одного': 0, 'Нет': 0, 'Ничего': 0, '1-2': 1, '2-3': 2, 'Более 3 раз': 3}
+if 'Sports_Numeric' not in df.columns:
+    df['Sports_Numeric'] = df['Training_Freq'].map(sports_map)
+
+# Recalculate Risks
+df['Risk_Screen'] = (df['ScreenTime_Weekend'] > median_screen).astype(int)
+df['Risk_Sleep'] = (df['Sleep_Hours'] < sleep_limit).astype(int)
+df['Risk_Sports'] = (df['Sports_Numeric'] < sport_limit).astype(int)
+df['Bad_Habit_Score'] = df['Risk_Screen'] + df['Risk_Sleep'] + df['Risk_Sports']
+
+# --- 2. CALCULATE GROUP STATS ---
+# We want: Count (N), Percentage (%), and Average GPA for each group
+group_stats = df.groupby('Bad_Habit_Score').agg(
+    Count=('GPA', 'count'),
+    Avg_GPA=('GPA', 'mean'),
+    Std_Dev=('GPA', 'std')
+)
+
+# Calculate Percentage
+total_n = group_stats['Count'].sum()
+group_stats['Percentage'] = (group_stats['Count'] / total_n * 100).round(1)
+
+# Formatting
+group_stats['Avg_GPA'] = group_stats['Avg_GPA'].round(2)
+group_stats['Std_Dev'] = group_stats['Std_Dev'].round(2)
+
+print("--- DEFINITIONS (THRESHOLDS) ---")
+print(f"1. High Screen Time: > {median_screen} hours (Weekend)")
+print(f"2. Low Sleep:        < {sleep_limit} hours")
+print(f"3. Low Sports:       < {sport_limit} times/week (0 or 1)")
+print("-" * 60)
+print("--- RISK GROUP SIZES AND PERFORMANCE ---")
+print(group_stats[['Count', 'Percentage', 'Avg_GPA', 'Std_Dev']])
+print("-" * 60)
+
+# Check specifically the 3-Factor Group
+n_group_3 = group_stats.loc[3, 'Count']
+if n_group_3 < 15:
+    print(f"WARNING: Group 3 is very small (N={n_group_3}). Interpret with caution.")
+else:
+    print(f"VALIDATION: Group 3 has {n_group_3} students. This is a sufficient sample size for statistical testing.")
+```
+
+    --- DEFINITIONS (THRESHOLDS) ---
+    1. High Screen Time: > 7.0 hours (Weekend)
+    2. Low Sleep:        < 7.0 hours
+    3. Low Sports:       < 2.0 times/week (0 or 1)
+    ------------------------------------------------------------
+    --- RISK GROUP SIZES AND PERFORMANCE ---
+                     Count  Percentage  Avg_GPA  Std_Dev
+    Bad_Habit_Score                                     
+    0                   38        20.8     4.10     0.49
+    1                   69        37.7     4.22     0.40
+    2                   49        26.8     4.15     0.44
+    3                   27        14.8     3.82     0.86
+    ------------------------------------------------------------
+    VALIDATION: Group 3 has 27 students. This is a sufficient sample size for statistical testing.
+
+
+
+```python
+import pandas as pd
+from scipy.stats import chi2_contingency
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# 1. Define our Groups
+# "Modern Era" = High Risk Screen (> 7 hours)
+# "Classic Era" = Low Risk Screen (<= 7 hours)
+# We assume 'Risk_Screen' is already calculated (0 or 1)
+
+# 2. Define the "Double Threat" (Low Sleep AND Low Sport)
+# This is the "Bad Situation" from the pre-smartphone era
+df['Double_Trouble'] = ((df['Risk_Sleep'] == 1) & (df['Risk_Sports'] == 1)).astype(int)
+
+# 3. Create the Comparison Table (The Matrix)
+# We compare Screen Risk (Rows) vs. The Other Risks (Cols)
+domino_table = pd.crosstab(df['Risk_Screen'], df['Double_Trouble'], normalize='index') * 100
+
+print("--- THE DOMINO EFFECT ANALYSIS ---")
+print("Probability of having BOTH 'Low Sleep' and 'No Sports':")
+print("-" * 60)
+print(f"Low Screen Users (The 'Past'): {domino_table.loc[0, 1]:.1f}%")
+print(f"High Screen Users (The 'Present'): {domino_table.loc[1, 1]:.1f}%")
+print("-" * 60)
+
+# Calculate the Multiplier (Relative Risk)
+risk_ratio = domino_table.loc[1, 1] / domino_table.loc[0, 1]
+print(f"THE MULTIPLIER: High Screen users are {risk_ratio:.1f}x more likely")
+print("to suffer from both Sleep Deprivation AND Physical Inactivity.")
+print("-" * 60)
+
+# 4. Statistical Significance (Chi-Square)
+# We need raw counts, not percentages, for the test
+raw_table = pd.crosstab(df['Risk_Screen'], df['Double_Trouble'])
+chi2, p, dof, expected = chi2_contingency(raw_table)
+
+print(f"P-Value (Is this increase real?): {p:.4f}")
+if p < 0.05:
+    print("VERDICT: SIGNIFICANT. Smartphones significantly increase the chance of stacking risks.")
+else:
+    print("VERDICT: NOT SIGNIFICANT. The risks seem independent.")
+
+# 5. Visual Proof
+plt.figure(figsize=(8, 6))
+sns.barplot(x=domino_table.index, y=domino_table[1], palette=['#2ecc71', '#e74c3c'])
+plt.xticks([0, 1], ['Low Screen Time\n("Pre-Smartphone Proxy")', 'High Screen Time\n("Modern Reality")'])
+plt.ylabel('Probability of having BOTH Low Sleep & Low Sport (%)')
+plt.title('Do Smartphones Increase the Risk of "Total Collapse"?')
+plt.ylim(0, 30) # Adjust based on your data
+plt.show()
+```
+
+    --- THE DOMINO EFFECT ANALYSIS ---
+    Probability of having BOTH 'Low Sleep' and 'No Sports':
+    ------------------------------------------------------------
+    Low Screen Users (The 'Past'): 16.7%
+    High Screen Users (The 'Present'): 33.3%
+    ------------------------------------------------------------
+    THE MULTIPLIER: High Screen users are 2.0x more likely
+    to suffer from both Sleep Deprivation AND Physical Inactivity.
+    ------------------------------------------------------------
+    P-Value (Is this increase real?): 0.0144
+    VERDICT: SIGNIFICANT. Smartphones significantly increase the chance of stacking risks.
+
+
+    /var/folders/d8/4k3q_2wd4nv9gmh9ch_b79jr0000gn/T/ipykernel_31258/2546067950.py:45: FutureWarning: 
+    
+    Passing `palette` without assigning `hue` is deprecated and will be removed in v0.14.0. Assign the `x` variable to `hue` and set `legend=False` for the same effect.
+    
+      sns.barplot(x=domino_table.index, y=domino_table[1], palette=['#2ecc71', '#e74c3c'])
+
+
+
+    
+![png](output_45_2.png)
+    
+
+
+
+```python
 
 ```
