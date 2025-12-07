@@ -2858,5 +2858,236 @@ plt.show()
 
 
 ```python
+import pandas as pd
+import numpy as np
+import re
+
+# 1. LOAD DATA
+filename = 'Респонденты, балюусь со временем - Ответы на форму (1)-3.csv'
+df = pd.read_csv(filename)
+
+# 2. CLEANING FUNCTION (The one we used before)
+def clean_currency_format(x):
+    if pd.isna(x): return None
+    # Replace comma with dot
+    x_str = str(x).replace(',', '.')
+    try:
+        # Extract number
+        number = re.findall(r"[-+]?\d*\.\d+|\d+", x_str)
+        return float(number[0]) if number else None
+    except: return None
+
+# 3. APPLY CLEANING
+df = df.rename(columns={'Какая у тебя средняя оценка по всем предметам': 'GPA'})
+df['GPA'] = df['GPA'].apply(clean_currency_format)
+
+# 4. RUN THE SANITY CHECK
+print("GPA Column Type:", df['GPA'].dtype)
+print("-" * 30)
+print("First 10 Unique GPA Values in Python:")
+print(df['GPA'].unique()[:10]) # Show first 10
+print("-" * 30)
+
+if df['GPA'].dtype == 'float64':
+    print("VERDICT: SAFE.")
+    print("Python sees numbers (e.g., 4.01). Your analysis was correct.")
+    print("If Excel shows 'April 1st', it is just a display error in Excel.")
+else:
+    print("VERDICT: DANGER. Data is not numeric.")
+```
+
+    GPA Column Type: float64
+    ------------------------------
+    First 10 Unique GPA Values in Python:
+    [3.27 4.61 4.01 4.23 3.94 3.88 4.6  4.24 4.69 3.54]
+    ------------------------------
+    VERDICT: SAFE.
+    Python sees numbers (e.g., 4.01). Your analysis was correct.
+    If Excel shows 'April 1st', it is just a display error in Excel.
+
+
+
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+import re
+
+# 1. LOAD
+filename = 'Респонденты, балюусь со временем - Ответы на форму (1)-3.csv'
+df = pd.read_csv(filename)
+
+# 2. RENAME
+new_names = {
+    'В среднем в будний день я провожу перед экраном ...': 'ScreenTime_Weekday',
+    'В среднем в выходной день я провожу перед экраном ...': 'ScreenTime_Weekend',
+    'Какая у тебя средняя оценка по всем предметам': 'GPA',
+    'Сколько часов ты в среднем спишь?': 'Sleep_Hours',
+    'Сколько раз в неделю ты ходишь на тренировки?': 'Training_Freq'
+}
+df = df.rename(columns=new_names)
+df = df.dropna(how='all')
+
+# 3. CLEAN NUMBERS
+def clean_currency_format(x):
+    if pd.isna(x): return None
+    x_str = str(x).replace(',', '.')
+    try:
+        number = re.findall(r"[-+]?\d*\.\d+|\d+", x_str)
+        return float(number[0]) if number else None
+    except: return None
+
+numeric_cols = ['ScreenTime_Weekday', 'ScreenTime_Weekend', 'GPA', 'Sleep_Hours']
+for col in numeric_cols:
+    df[col] = df[col].apply(clean_currency_format)
+
+# 4. FILTER OUTLIERS
+df = df[df['GPA'] <= 5]
+df = df[df['Sleep_Hours'] <= 24]
+df = df[df['ScreenTime_Weekend'] <= 24]
+
+print("Data Reloaded. Ready to find the Optimal Points.")
+```
+
+    Data Reloaded. Ready to find the Optimal Points.
+
+
+
+```python
+# 1. Create Bins (Buckets) for Screen Time
+# 0-2, 2-4, 4-6... up to 14+
+bins = [0, 2, 4, 6, 8, 10, 12, 14, 24]
+labels = ['0-2h', '2-4h', '4-6h', '6-8h', '8-10h', '10-12h', '12-14h', '14h+']
+
+df['Screen_Bin'] = pd.cut(df['ScreenTime_Weekend'], bins=bins, labels=labels)
+
+# 2. Visualize the Curve
+plt.figure(figsize=(12, 6))
+sns.lineplot(
+    data=df, 
+    x='Screen_Bin', 
+    y='GPA', 
+    marker='o', 
+    linewidth=3,
+    color='#e74c3c', # Red because it's a risk
+    errorbar=None    # Hide error bars to see the trend clearly
+)
+
+plt.title('Finding the Limit: At what hour does GPA drop?', fontsize=16)
+plt.ylabel('Average GPA', fontsize=12)
+plt.xlabel('Weekend Screen Time (Hours)', fontsize=12)
+plt.grid(True, alpha=0.3)
+plt.show()
+
+# 3. Print the Numbers
+print("Average GPA by Screen Time Bucket:")
+print(df.groupby('Screen_Bin')['GPA'].mean())
+```
+
+
+    
+![png](output_48_0.png)
+    
+
+
+    Average GPA by Screen Time Bucket:
+    Screen_Bin
+    0-2h      4.284167
+    2-4h      4.212963
+    4-6h      4.092826
+    6-8h      4.219706
+    8-10h     4.137647
+    10-12h    3.955625
+    12-14h    3.830000
+    14h+      3.694444
+    Name: GPA, dtype: float64
+
+
+    /var/folders/d8/4k3q_2wd4nv9gmh9ch_b79jr0000gn/T/ipykernel_98634/2438005933.py:28: FutureWarning: The default of observed=False is deprecated and will be changed to True in a future version of pandas. Pass observed=False to retain current behavior or observed=True to adopt the future default and silence this warning.
+      print(df.groupby('Screen_Bin')['GPA'].mean())
+
+
+
+```python
+# 1. Round Sleep to nearest hour for grouping
+df['Sleep_Rounded'] = df['Sleep_Hours'].round()
+
+# 2. Visualize the Curve
+plt.figure(figsize=(12, 6))
+sns.lineplot(
+    data=df, 
+    x='Sleep_Rounded', 
+    y='GPA', 
+    marker='o', 
+    linewidth=3,
+    color='#2ecc71', # Green because sleep is good
+    errorbar=None
+)
+
+plt.title('Finding the Sweet Spot: How many hours of Sleep?', fontsize=16)
+plt.ylabel('Average GPA', fontsize=12)
+plt.xlabel('Sleep Duration (Hours)', fontsize=12)
+plt.xticks(range(4, 11)) # Show 4, 5, 6... 10
+plt.grid(True, alpha=0.3)
+plt.show()
+
+# 3. Print the Numbers
+print("Average GPA by Sleep Hours:")
+print(df.groupby('Sleep_Rounded')['GPA'].mean())
+```
+
+
+    
+![png](output_49_0.png)
+    
+
+
+    Average GPA by Sleep Hours:
+    Sleep_Rounded
+    2.0     4.470000
+    3.0     3.530000
+    4.0     4.060000
+    5.0     4.159412
+    6.0     4.042857
+    7.0     4.144545
+    8.0     4.143514
+    9.0     4.257500
+    10.0    4.040000
+    Name: GPA, dtype: float64
+
+
+
+```python
+# 1. Define Order
+order = ['Ни одного', '1-2', '2-3', 'Более 3 раз']
+
+# 2. Visualize
+plt.figure(figsize=(10, 6))
+sns.lineplot(
+    data=df, 
+    x='Training_Freq', 
+    y='GPA', 
+    marker='o', 
+    linewidth=3,
+    color='#3498db', # Blue
+    errorbar=None
+)
+
+plt.title('Finding the Sweet Spot: Training Frequency', fontsize=16)
+plt.ylabel('Average GPA', fontsize=12)
+plt.xlabel('Training Frequency', fontsize=12)
+plt.grid(True, alpha=0.3)
+plt.show()
+```
+
+
+    
+![png](output_50_0.png)
+    
+
+
+
+```python
 
 ```
